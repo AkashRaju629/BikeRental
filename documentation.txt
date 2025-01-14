@@ -1,0 +1,218 @@
+---------------------------------------------------------------Architecture:
+
+bike-rental-project/
+├── backend/
+│   ├── data_processing/
+│   │   ├── CleaningData.py
+│   │   ├── FetchingData.py
+│   │   ├── ReqColumns.py
+│   │   
+│   ├── data/                 # Raw data files
+│   │   └── processed/
+│   ├── src/  
+│	 │   ├── RealTimeData.py (new file for GBFS data)                      
+│   ├── requirements.txt
+│   └── app.py 
+├── data/
+│   │   ├── raw/                 # Raw data files
+│   │   └── processed/
+                  
+├── frontend/
+│   ├── public/
+│   │   └── data/               # CSV files for frontend
+│   ├── src/
+│   │   ├── components/
+│	 │   │   ├── Alert/
+│   │   │   ├── BikeCard/
+│	 │   │   ├── BikeShareViewer/
+│	 │   │   ├── BikeStationAvailability/
+│   │   │   ├── BookingConfirmPopup/
+│   │   │   ├── DataViewer/
+│   │   │   ├── Footer/
+│   │   │   ├── Header/
+│   │   │   ├── LocationSelection/
+│	 │   │   ├── ReviewModal/
+│   │   │   ├── UserOrder/
+│   │   │   └── 
+│   │   ├── pages/
+│	 │   │   ├── BikeShareAnalysis/
+│   │   │   ├── Home/
+│   │   │   ├── BookARide/
+│   │   │   ├── LoginSignup/
+│   │   │   └── Statistics/
+│	 │   │   ├── UserProfile/
+│	 │   │   ├── UserReviews/
+│   │   └── App.js
+│	 └── App.css
+│	 └── index.css
+│   └── package.json
+└── README.md
+
+----------------------------------------------------------------------------backend script 
+cd backend
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app:app --reload
+---------------------------------------------------------------------------frontend script
+cd frontend
+npm install
+npm start
+---------------------------------------------------------------------------States
+8 jurisdictions: Washington, DC.; Arlington, VA; Alexandria, VA; Montgomery, MD; Prince George's County, MD; Fairfax County, VA; City of Fairfax, VA; and the City of Falls Church, VA.
+---------------------------------------------------------------------------Data Processing Pipeline
+The Python scripts in data_processing/ will process Reddit data and save to CSV
+The RealTimeData.py script runs continuously to fetch bike share data
+The FastAPI backend serves both datasets to the frontend
+The frontend DataViewer component visualizes both datasets
+---------------------------------------------------------------------------Project Dependencies:
+
+---------------------------------------------------------------------------Backend:
+FastAPI- Python web framework focused on high performance and automatic API documentation.
+pandas- Data manipulation library for Python. Handles data processing, analysis, and transformation with DataFrame structures.
+httpx- Modern HTTP client for Python. Supports async/await syntax and both HTTP/1.1 and HTTP/2.
+uvicorn- ASGI server implementation, used to run FastAPI applications. Supports WebSocket and HTTP protocols.
+python-multipart- Handles multipart form data parsing, essential for file uploads and form submissions in FastAPI.
+---------------------------------------------------------------------------Frontend:
+react- JavaScript library for building user interfaces through components and managing state
+react-router-dom- Handles client-side routing and navigation between components
+recharts- React charting library for data visualization, supporting various chart types like line, bar, and pie charts
+react-leaflet- React components for interactive maps using Leaflet.js
+tailwindcss- Utility-first CSS framework for styling via class names
+---------------------------------------------------------------------------The architecture follows these principles:
+Separation of concerns between data processing, API, and frontend
+Real-time data updates with polling
+Reusable components
+Clear data flow from source to visualization
+-----------------------------------------------------------------------------website links
+https://capitalbikeshare.com/
+https://capitalbikeshare.com/system-data
+https://gbfs.lyft.com/gbfs/2.3/dca-cabi/gbfs.json
+
+----------------------------------Booking confirmation email
+
+Hi,
+
+Your booking for {{bike_name}} has been confirmed!
+
+Booking Details:
+- Price: ${{booking_price}}
+- Booked on: {{booking_date}}
+- Booked for: {{scheduled_date}}
+- Pickup Location: {{from_location}}
+- Dropoff Location: {{to_location}}
+- Pickup Time: {{pickup_time}}
+- Dropoff Time: {{dropoff_time}}
+
+Thank you for choosing our service!
+
+Hi {{to_email}},
+
+Your booking for {{bike_name}} has been successfully confirmed!
+
+Booking Details:
+- Bike: {{bike_name}}
+- Booking Price: ${{booking_price}}
+- Booking Date: {{booking_date}}
+- Scheduled Date: {{scheduled_date}}
+
+Location Details:
+- Pickup Location: {{from_location}}
+- Pickup Time: {{pickup_time}}
+- Drop-off Location: {{to_location}}
+- Drop-off Time: {{dropoff_time}}
+
+Important:
+- Please arrive 5-10 minutes before your scheduled time
+- Bring a valid ID for verification
+- Your bike will be ready for your arrival
+
+Need help? Contact our support team.
+
+Thank you for choosing our service!
+
+Best regards,
+Bike Rental Team
+
+------------------------------------------Cancellation email
+
+Hi {{to_email}},
+Your booking for {{bike_name}} has been cancelled.
+
+- Booked on: {{booking_date}}
+- Booked for: {{scheduled_date}}
+- Pickup Location: {{from_location}}
+- Dropoff Location: {{to_location}}
+- Pickup Time: {{pickup_time}}
+- Dropoff Time: {{dropoff_time}}
+
+Cancellation Date: {{booking_date}}
+
+We hope to serve you again!
+
+Hi {{to_email}},
+
+Your booking for {{bike_name}} has been cancelled successfully.
+
+Cancelled Booking Details:
+- Bike Model: {{bike_name}}
+- Booking Price: ${{booking_price}}
+- Original Booking Date: {{booking_date}}
+- Scheduled Date: {{scheduled_date}}
+
+Ride Details:
+- Pickup Location: {{from_location}}
+- Pickup Time: {{pickup_time}}
+- Drop-off Location: {{to_location}}
+- Drop-off Time: {{dropoff_time}}
+
+Cancellation processed on: {{booking_date}}
+
+We understand plans can change. Feel free to book again when you're ready!
+
+Need assistance? Our support team is here to help.
+
+Thank you for your understanding.
+
+Best regards,
+Bike Rental Team
+
+-------------------------------------------complete ride email
+
+Hi {{to_email}},
+
+Your ride with {{bike_name}} has been completed successfully!
+
+- Booked on: {{booking_date}}
+- Booked for: {{scheduled_date}}
+- Pickup Location: {{from_location}}
+- Dropoff Location: {{to_location}}
+- Pickup Time: {{pickup_time}}
+- Dropoff Time: {{dropoff_time}}
+
+Completion Date: {{completion_date}}
+
+Hi {{to_email}},
+
+Your ride with {{bike_name}} has been completed successfully!
+
+Ride Summary:
+- Bike: {{bike_name}}
+- Final Cost: ${{booking_price}}
+- Ride Date: {{scheduled_date}}
+
+Journey Details:
+- Start Location: {{from_location}}
+- Start Time: {{pickup_time}}
+- End Location: {{to_location}}
+- End Time: {{dropoff_time}}
+- Completion Date: {{completion_date}}
+
+We hope you enjoyed your ride! Please take a moment to share your experience by rating your ride in our app.
+
+Thank you for choosing our service. We look forward to serving you again!
+
+Best regards,
+Bike Rental Team
+
+Note: A detailed receipt has been generated in your account.
